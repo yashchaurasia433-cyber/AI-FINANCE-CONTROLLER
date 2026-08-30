@@ -101,7 +101,7 @@ python3 -m unittest tests.test_app -v
 
 ## 🌐 Live Demo
 
-🔗 **[AI-FINANCE-CONTROLLER](https://ai-finance-controller-he6s.onrender.com))**
+🔗 **[AI-FINANCE-CONTROLLER](https://ai-finance-controller-he6s.onrender.com)**
 
 > ⏳ **Note:** This is hosted on Render's free tier, which spins down after 15 minutes of inactivity. The first request after a period of inactivity may take 30–60 seconds to wake up — please be patient on your first visit.
 
