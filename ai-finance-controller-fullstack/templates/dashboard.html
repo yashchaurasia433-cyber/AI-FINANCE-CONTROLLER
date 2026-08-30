@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — AI Finance Controller{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />{% endblock %}
+{% block body %}
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div class="brand-text"><div class="eyebrow">AI Finance Controller</div><h1>Dashboard</h1></div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ url_for('pages.dashboard_page') }}" class="active">Overview</a>
+      <a href="{{ url_for('pages.reconciliation_page') }}">Reconciliation</a>
+      <a href="{{ url_for('pages.history_page') }}">History</a>
+      <a href="{{ url_for('pages.settings_page') }}">Settings</a>
+      <span class="pill" id="user-pill">…</span>
+      <a href="#" id="logout-link" class="btn btn-ghost btn-sm">Sign out</a>
+    </nav>
+  </div>
+</header>
+
+<section class="dash-hero">
+  <div id="mini-scene"></div>
+  <div class="wrap dash-hero-content">
+    <div class="section-label">Welcome back</div>
+    <h2 class="dash-title">Here's where settlement stands.</h2>
+    <p class="dash-sub" id="run-timestamp">Loading latest run…</p>
+  </div>
+</section>
+
+<section class="dash-body">
+  <div class="wrap">
+    <div class="metrics-grid" id="metrics-grid"></div>
+
+    <div class="grid-2col">
+      <div class="panel activity-panel">
+        <div class="section-label" style="padding:16px 16px 0;">Largest open exceptions</div>
+        <div id="activity-list" class="activity-list"></div>
+        <div style="padding: 0 16px 16px;">
+          <a href="{{ url_for('pages.reconciliation_page') }}" class="btn btn-ghost btn-sm btn-block">Review all in Reconciliation Workspace →</a>
+        </div>
+      </div>
+
+      <div class="panel quickstart-panel">
+        <div class="section-label" style="padding:16px 16px 0;">Quick actions</div>
+        <div class="quickstart-list">
+          <a href="{{ url_for('pages.reconciliation_page') }}" class="qa-item">
+            <span class="qa-icon" style="color:var(--gold);">⟷</span>
+            <div><strong>Run a fresh reconciliation</strong><p>Generate a new sample batch or bring your own CSVs.</p></div>
+          </a>
+          <a href="{{ url_for('pages.history_page') }}" class="qa-item">
+            <span class="qa-icon" style="color:var(--cyan);">☰</span>
+            <div><strong>Review past runs</strong><p>Every reconciliation you've run is saved to your account.</p></div>
+          </a>
+          <a href="{{ url_for('pages.settings_page') }}" class="qa-item">
+            <span class="qa-icon" style="color:var(--violet);">⚙</span>
+            <div><strong>Account settings</strong><p>Change your password or check LLM availability.</p></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+    <span>Signed in as <span id="footer-user">…</span></span>
+    <span>Built for Razorpay AI Buildathon, Track 04</span>
+  </div>
+</footer>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scene-ambient.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth-client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Settings — AI Finance Controller{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/settings.css') }}" />{% endblock %}
+{% block body %}
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div class="brand-text"><div class="eyebrow">AI Finance Controller</div><h1>Settings</h1></div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ url_for('pages.dashboard_page') }}">Overview</a>
+      <a href="{{ url_for('pages.reconciliation_page') }}">Reconciliation</a>
+      <a href="{{ url_for('pages.history_page') }}">History</a>
+      <a href="{{ url_for('pages.settings_page') }}" class="active">Settings</a>
+      <span class="pill" id="user-pill">…</span>
+      <a href="#" id="logout-link" class="btn btn-ghost btn-sm">Sign out</a>
+    </nav>
+  </div>
+</header>
+
+<section class="settings-body">
+  <div class="wrap settings-grid">
+
+    <div class="panel settings-panel">
+      <div class="section-label">Account</div>
+      <div class="account-row"><span>Username</span><strong id="account-username">…</strong></div>
+      <div class="account-row"><span>Email</span><strong id="account-email">…</strong></div>
+    </div>
+
+    <div class="panel settings-panel">
+      <div class="section-label">Change password</div>
+      <div id="pw-alert"></div>
+      <form id="change-password-form">
+        <div class="field"><label for="current_password">Current password</label><input type="password" id="current_password" required /></div>
+        <div class="field"><label for="new_password">New password</label><input type="password" id="new_password" required minlength="8" /></div>
+        <div class="field"><label for="confirm_new_password">Confirm new password</label><input type="password" id="confirm_new_password" required minlength="8" /></div>
+        <button type="submit" class="btn btn-primary">Update password →</button>
+      </form>
+    </div>
+
+    <div class="panel settings-panel">
+      <div class="section-label">Settlement Q&amp;A / LLM</div>
+      <p id="llm-status-text" class="muted-text">Checking…</p>
+      <p class="hint-text">To enable open-ended questions beyond the built-in rule-based answers, set <code>ANTHROPIC_API_KEY</code> in the server's environment (see <code>.env.example</code>). The key is never sent to or stored in the browser.</p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+    <span>Signed in as <span id="footer-user">…</span></span>
+    <span>Built for Razorpay AI Buildathon, Track 04</span>
+  </div>
+</footer>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth-client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/settings.js') }}"></script>
+{% endblock %}

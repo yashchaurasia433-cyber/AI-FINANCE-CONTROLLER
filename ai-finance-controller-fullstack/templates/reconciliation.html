@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% block title %}Reconciliation Workspace — AI Finance Controller{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/reconciliation.css') }}" />{% endblock %}
+{% block body %}
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div class="brand-text"><div class="eyebrow">AI Finance Controller</div><h1>Reconciliation Workspace</h1></div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ url_for('pages.dashboard_page') }}">Overview</a>
+      <a href="{{ url_for('pages.reconciliation_page') }}" class="active">Reconciliation</a>
+      <a href="{{ url_for('pages.history_page') }}">History</a>
+      <a href="{{ url_for('pages.settings_page') }}">Settings</a>
+      <span class="pill" id="status-pill">idle</span>
+      <span class="pill" id="user-pill">…</span>
+      <a href="#" id="logout-link" class="btn btn-ghost btn-sm">Sign out</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div id="scene-container"></div>
+  <div class="hero-hud">
+    <div class="wrap">
+      <div class="hero-kicker">Reconciliation, visualized as it happens</div>
+      <h2 class="hero-title">Every transaction takes one of two paths through the gate.</h2>
+      <p class="hero-sub">Gold and green particles are transactions the matching engine could prove are the same event on both sides. Red particles are exceptions — diverted for human review, never hidden.</p>
+    </div>
+  </div>
+  <div class="hero-cta">
+    <button class="btn btn-primary" id="run-sample-btn">▶ Run Sample Reconciliation</button>
+  </div>
+  <div class="hero-legend">
+    <div class="legend-item"><span class="dot gold"></span> Exact match</div>
+    <div class="legend-item"><span class="dot green"></span> Fuzzy match</div>
+    <div class="legend-item"><span class="dot red"></span> Exception</div>
+  </div>
+</section>
+
+<section class="data-source">
+  <div class="wrap">
+    <div class="section-label">Bring your own data</div>
+    <div class="source-tabs">
+      <button class="source-tab active" data-source="upload">Upload CSVs</button>
+      <button class="source-tab" data-source="url">Fetch from URL</button>
+    </div>
+    <div class="panel">
+      <div class="source-panel-body">
+
+        <div class="source-view active" data-view="upload">
+          <div class="upload-pair">
+            <div class="upload-slot" id="bank-upload-slot">
+              <span class="upload-label">Bank statement CSV</span>
+              <button class="btn btn-ghost btn-sm drop-btn" id="bank-upload-btn">Choose file…</button>
+              <input type="file" id="bank-upload-input" accept=".csv" />
+              <div class="file-status" id="bank-file-status">No file selected</div>
+            </div>
+            <div class="upload-slot" id="gateway-upload-slot">
+              <span class="upload-label">Gateway transactions CSV</span>
+              <button class="btn btn-ghost btn-sm drop-btn" id="gateway-upload-btn">Choose file…</button>
+              <input type="file" id="gateway-upload-input" accept=".csv" />
+              <div class="file-status" id="gateway-file-status">No file selected</div>
+            </div>
+          </div>
+          <div id="mapping-container"></div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary" id="import-run-btn" disabled>Import &amp; Reconcile →</button>
+          </div>
+          <div id="upload-import-status" class="import-status"></div>
+        </div>
+
+        <div class="source-view" data-view="url">
+          <label>Bank statement CSV URL</label>
+          <div class="url-row" style="margin-bottom:12px;">
+            <input type="url" id="bank-url-input" placeholder="https://example.com/bank_statement.csv" />
+            <button class="btn btn-ghost btn-sm" id="bank-url-fetch">Fetch</button>
+          </div>
+          <label>Gateway transactions CSV URL</label>
+          <div class="url-row">
+            <input type="url" id="gateway-url-input" placeholder="https://example.com/gateway_transactions.csv" />
+            <button class="btn btn-ghost btn-sm" id="gateway-url-fetch">Fetch</button>
+          </div>
+          <div id="url-mapping-container"></div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary" id="import-run-url-btn" disabled>Import &amp; Reconcile →</button>
+          </div>
+          <div id="url-import-status" class="import-status">
+            Fetched server-side, so this works even when the remote host blocks direct browser requests (CORS).
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="metrics" style="padding-top:24px;">
+  <div class="wrap">
+    <div class="metrics-grid" id="metrics-grid"></div>
+  </div>
+</section>
+
+<section class="workspace">
+  <div class="wrap">
+    <div class="grid-2">
+
+      <div class="panel chat-panel">
+        <div class="section-label" style="padding:14px 14px 0;">Settlement Q&amp;A <span id="llm-badge" class="llm-badge"></span></div>
+        <div class="chat-log" id="chat-log">
+          <div class="msg agent">
+            <div class="role">Copilot</div>
+            <div class="bubble">Ask me things like "what's the match rate?", "largest unmatched record?", or "why wasn't TXN12345678 matched?"</div>
+          </div>
+        </div>
+        <div class="chat-input-row">
+          <input type="text" id="chat-input" placeholder="Ask about the settlement data…" />
+          <button id="chat-send">Ask</button>
+        </div>
+      </div>
+
+      <div class="panel ledger-panel">
+        <div class="section-label" style="padding:14px 14px 0;">Exception Ledger</div>
+        <div class="ledger-filters" id="ledger-filters">
+          <button class="filter-chip active" data-filter="all">All</button>
+          <button class="filter-chip" data-filter="exact">Exact</button>
+          <button class="filter-chip" data-filter="fuzzy">Fuzzy</button>
+          <button class="filter-chip" data-filter="unmatched_bank">Bank-only</button>
+          <button class="filter-chip" data-filter="unmatched_gateway">Gateway-only</button>
+        </div>
+        <div class="ledger-scroll" id="ledger-scroll"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="forecast">
+  <div class="wrap">
+    <div class="section-label">7-Day Settlement Forecast</div>
+    <div class="panel forecast-panel">
+      <div id="forecast-3d-container"></div>
+      <div class="forecast-legend">
+        <div class="legend-item"><span class="dot gold"></span> Actual (matched settlement)</div>
+        <div class="legend-item"><span class="dot cyan"></span> Forecast (projected)</div>
+        <span class="forecast-hint">Hover a bar for the exact date and amount</span>
+      </div>
+      <p class="forecast-note" id="forecast-note">Linear trend over daily matched settlement volume — a simple, auditable projection, not a black-box model.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+    <span>Deterministic rule-based matching · LLM used only for narration, never for the match decision</span>
+    <span>Built for Razorpay AI Buildathon, Track 04</span>
+  </div>
+</footer>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scene.js') }}"></script>
+<script src="{{ url_for('static', filename='js/scene-forecast.js') }}"></script>
+<script src="{{ url_for('static', filename='js/auth-client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/reconciliation.js') }}"></script>
+{% endblock %}

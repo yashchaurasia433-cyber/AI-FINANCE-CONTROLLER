@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}AI Finance Controller — Reconciliation, Q&A & Forecasting{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}" />{% endblock %}
+{% block body %}
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div class="brand-text">
+        <div class="eyebrow">Track 04 — Finance Controller</div>
+        <h1>AI Finance Controller</h1>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ github_url }}" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="{{ url_for('pages.login_page') }}">Sign in</a>
+      <a href="{{ url_for('pages.register_page') }}" class="btn btn-primary btn-sm">Create account</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div id="ambient-scene"></div>
+  <div class="hero-content wrap">
+    <div class="hero-kicker">Reconciliation · Q&amp;A · Forecasting — one cockpit</div>
+    <h2 class="hero-title">Finance ops shouldn't feel like<br/>reading two spreadsheets by hand.</h2>
+    <p class="hero-sub">
+      AI Finance Controller matches your bank statement against your payment-gateway
+      ledger, explains every exception in plain English, answers questions about the
+      result, and forecasts what's coming next — backed by a real account, a real
+      database, and reconciliation history you can come back to.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('pages.register_page') }}" class="btn btn-primary">Create a free account →</a>
+      <a href="#how" class="btn btn-ghost">See how it works</a>
+    </div>
+    <div class="hero-stats">
+      <div><span class="stat-num gold">75.9%</span><span class="stat-label">auto-match rate on sample data</span></div>
+      <div><span class="stat-num green">0</span><span class="stat-label">exceptions silently hidden</span></div>
+      <div><span class="stat-num violet">30k+</span><span class="stat-label">records reconciled in ~7s</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="section-label">What it does</div>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(216,168,87,0.15); color:var(--gold);">⟷</div>
+        <h3>Deterministic reconciliation</h3>
+        <p>Exact match, then confidence-scored fuzzy match for rounding drift, settlement
+        lag, and reference typos. Date-bucketed so it stays fast on large files, with a
+        hard gate so a similar-looking reference id can never override a genuinely wrong amount.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(124,111,240,0.15); color:var(--violet);">◈</div>
+        <h3>Settlement Q&amp;A</h3>
+        <p>Ask "what's the match rate?" or "why wasn't TXN123 matched?" and get an answer
+        computed from the real data. An optional Anthropic API key can be configured on the
+        server for open-ended questions — never pasted into the browser.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(79,174,125,0.15); color:var(--green);">▲</div>
+        <h3>Auditable forecasting</h3>
+        <p>A plain linear trend over matched settlement volume, projected 7 days out.
+        Simple enough to check by hand — a forecast nobody can audit isn't one finance
+        teams can act on.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon" style="background:rgba(79,168,201,0.15); color:var(--cyan);">⇪</div>
+        <h3>Bring your own data</h3>
+        <p>Use sample data, upload your own bank + gateway CSVs, or fetch one from a URL —
+        parsed and column-mapped server-side, so it works whether the file has 50 rows or
+        50,000, and a URL fetch is never blocked by browser CORS.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how" id="how">
+  <div class="wrap">
+    <div class="section-label">How it works</div>
+    <div class="how-steps">
+      <div class="how-step"><span class="how-num">01</span><div><h4>Create an account</h4><p>Real registration, real password hashing, a database that remembers your reconciliation history.</p></div></div>
+      <div class="how-step"><span class="how-num">02</span><div><h4>Load two sources</h4><p>Sample data, your own CSV upload, or a URL — bank statement and payment-gateway ledger.</p></div></div>
+      <div class="how-step"><span class="how-num">03</span><div><h4>Reconcile &amp; review</h4><p>Rule-based matching runs server-side with a stated reason for every decision — exceptions are never hidden.</p></div></div>
+      <div class="how-step"><span class="how-num">04</span><div><h4>Ask, forecast, revisit</h4><p>Query the result in plain English, see a 7-day projection, and come back later — every run is saved to your history.</p></div></div>
+    </div>
+    <div class="how-cta">
+      <a href="{{ url_for('pages.register_page') }}" class="btn btn-primary">Create a free account →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+    <span>Deterministic rule-based matching · LLM used only for narration, never for the match decision</span>
+    <span><a href="{{ github_url }}" target="_blank" rel="noopener">Source on GitHub ↗</a> · Built for Razorpay AI Buildathon, Track 04</span>
+  </div>
+</footer>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scene-ambient.js') }}"></script>
+<script>initAmbientScene(document.getElementById('ambient-scene'), { density: 700 });</script>
+{% endblock %}

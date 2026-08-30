@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Sign in — AI Finance Controller{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}" />{% endblock %}
+{% block body %}
+<div id="ambient-scene"></div>
+<div class="auth-shell">
+  <a href="{{ url_for('pages.home') }}" class="brand-link" style="margin-bottom:32px; display:flex; align-items:center; gap:12px;">
+    <div class="brand-mark">FC</div>
+    <div class="brand-text"><div class="eyebrow">AI Finance Controller</div><h1 style="margin:0;">Sign in</h1></div>
+  </a>
+
+  <div class="panel auth-panel">
+    <div id="form-alert"></div>
+    <form id="login-form">
+      <div class="field"><label for="identifier">Username or email</label><input type="text" id="identifier" required /></div>
+      <div class="field">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <label for="password" style="margin-bottom:0;">Password</label>
+          <a href="{{ url_for('pages.forgot_password_page') }}" style="font-family:var(--font-mono); font-size:11px;">Forgot password?</a>
+        </div>
+        <input type="password" id="password" required style="margin-top:6px;" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in →</button>
+    </form>
+    <div class="auth-switch">New here? <a href="{{ url_for('pages.register_page') }}">Create an account</a></div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/scene-ambient.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/auth.js') }}"></script>
+<script>
+  initAmbientScene(document.getElementById('ambient-scene'), { density: 500 });
+  wireLoginForm({{ next_path|tojson }});
+</script>
+{% endblock %}

@@ -1,0 +1,10 @@
+.settings-body { padding: 36px 0 60px; }
+.settings-grid { display: grid; gap: 20px; max-width: 620px; }
+.settings-panel { padding: 22px; }
+.account-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.account-row:last-child { border-bottom: none; }
+.account-row span { color: var(--text-muted); }
+.field { margin-bottom: 14px; }
+.muted-text { color: var(--text-muted); font-size: 13px; margin: 0 0 10px; }
+.hint-text { color: var(--text-muted); font-size: 12px; line-height: 1.6; margin: 0; }
+.hint-text code { background: var(--bg-raised); padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; }

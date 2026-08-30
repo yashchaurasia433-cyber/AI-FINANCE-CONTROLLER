@@ -1,0 +1,10 @@
+.history-body { padding: 36px 0 60px; }
+.history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.history-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); padding: 14px 16px; border-bottom: 1px solid var(--line);
+}
+.history-table td { padding: 14px 16px; border-bottom: 1px solid var(--line); font-family: var(--font-mono); }
+.history-table tr:last-child td { border-bottom: none; }
+.history-table .muted-row { color: var(--text-muted); text-align: center; padding: 40px; font-family: var(--font-body); }
+.source-tag { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 8px; border-radius: 999px; background: rgba(124,111,240,0.15); color: var(--violet); }

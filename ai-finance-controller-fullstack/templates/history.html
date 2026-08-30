@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Run History — AI Finance Controller{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/history.css') }}" />{% endblock %}
+{% block body %}
+
+<header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-mark">FC</div>
+      <div class="brand-text"><div class="eyebrow">AI Finance Controller</div><h1>Run History</h1></div>
+    </div>
+    <nav class="main-nav">
+      <a href="{{ url_for('pages.dashboard_page') }}">Overview</a>
+      <a href="{{ url_for('pages.reconciliation_page') }}">Reconciliation</a>
+      <a href="{{ url_for('pages.history_page') }}" class="active">History</a>
+      <a href="{{ url_for('pages.settings_page') }}">Settings</a>
+      <span class="pill" id="user-pill">…</span>
+      <a href="#" id="logout-link" class="btn btn-ghost btn-sm">Sign out</a>
+    </nav>
+  </div>
+</header>
+
+<section class="history-body">
+  <div class="wrap">
+    <div class="section-label">All reconciliation runs on your account</div>
+    <div class="panel">
+      <table class="history-table" id="history-table">
+        <thead><tr><th>Run</th><th>Source</th><th>Records</th><th>Match rate</th><th>Value at risk</th><th>When</th><th></th></tr></thead>
+        <tbody id="history-body"><tr><td colspan="7" class="muted-row">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:10px;">
+    <span>Signed in as <span id="footer-user">…</span></span>
+    <span>Built for Razorpay AI Buildathon, Track 04</span>
+  </div>
+</footer>
+
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/auth-client.js') }}"></script>
+<script src="{{ url_for('static', filename='js/pages/history.js') }}"></script>
+{% endblock %}
