@@ -99,6 +99,18 @@ python3 -m unittest tests.test_app -v
 
 30 tests, no `pytest` required — stdlib `unittest` + Flask's built-in test client.
 
+## 🌐 Live Demo
+
+🔗 **[AI-FINANCE-CONTROLLER](https://ai-finance-controller-he6s.onrender.com))**
+
+> ⏳ **Note:** This is hosted on Render's free tier, which spins down after 15 minutes of inactivity. The first request after a period of inactivity may take 30–60 seconds to wake up — please be patient on your first visit.
+
+Try it out:
+1. 📝 Create an account (or use it directly — no test credentials needed)
+2. ⚡ Click **"Run Sample Reconciliation"** on the Reconciliation Workspace
+3. 🌌 Watch the 3D sorting gate animate as transactions get matched
+4. 💬 Ask the Settlement Q&A something like *"what's the match rate?"*
+
 ---
 
 ## 📄 License & credits
