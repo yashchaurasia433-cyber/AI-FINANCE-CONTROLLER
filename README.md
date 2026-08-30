@@ -45,7 +45,6 @@ cp .env.example .env   # optional — see comments inside
 python run.py
 ```
 
-Open **http://localhost:5000** → create an account → go.
 
 ---
 
